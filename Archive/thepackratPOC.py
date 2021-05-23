@@ -1,3 +1,10 @@
+'''
+This is just a proof-of-concept. All it is capable of doing is opening up a console and giving you 
+an interface to input a URL, retrieve all instances of any string that matches an email regex, and
+output that result to a file (assuming stdout redirection isn't an option). It also does not check 
+for repeats of emails.
+'''
+
 print(
 '''
  _____ _           ______          _     ______      _   
