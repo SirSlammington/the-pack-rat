@@ -21,7 +21,7 @@ import requests, re, os
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-# URL (I used 'https://greshamoregon.gov/City-Directory/')
+# URL
 url = input('URL to scrape emails from: ')
 
 # Checks to see if the input was correct
