@@ -7,7 +7,6 @@ from export import Export
 # Aggregate data found
 agg_data = []
 
-# Regexes (0 is `email`, 1 is `phone`, 3 is `ipv4`)
 regex = {
   'email': re.compile(r'[\w\.-]+@[\w\.-]+'),
   'phone': re.compile(r'(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}'),
@@ -49,7 +48,6 @@ def formatData(collected_data, spec_data):
     print('Preferred data to scrape is invalid or otherwise unavailable.')
     return None
 
-# Nothing is being returned because each of these are class methods
 # I know this is a poor way of accomplishing this, but it is how I will do it
 def exportData(collected_data, exp, spec_data):
   exp = exp.lower()
