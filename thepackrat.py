@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# Necessary modules
 import requests, re
 from bs4 import BeautifulSoup
 from argparse import ArgumentParser; import sys
