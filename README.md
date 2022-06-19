@@ -1,7 +1,9 @@
-# The Pack Rat v0.5.1
-> The Pack Rat is a basic web scraping utility that can be used to fetch and compile information like emails, phone numbers, images, and various other media that renders on a targetted URL. It will fetch every instance of the specified information it locates, and print it to stdout. Future updates will change this to allow the user to export this data to other formats (CSV, SQLite, JSON, etc.).
+# The Pack Rat
+> The Pack Rat is a basic web scraping utility that can be used to fetch and compile information like emails, phone numbers, and IPv4 addresses that render on a targetted URL. It will fetch every instance of the specified information it locates, and print it to stdout. You can also save the data found in a .txt, .xml, .csv, or .json file.
+
+## Installation
+>`git clone https://github.com/SirSlammington/the-pack-rat`  
+>`python3 setup.py`
 
 ## Usage
-```
-python3 thepackrat.py -u [URL] -d [DATA-PREFERENCE]
-```
+>`python3 thepackrat.py -u https://example.com -d email -x txt`
