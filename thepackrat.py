@@ -12,7 +12,8 @@ agg_data = []
 regex = {
   'email': re.compile(r'[\w\.-]+@[\w\.-]+'),
   'phone': re.compile(r'(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}'),
-  'ipv4': re.compile(r'((1?\d\d?|2[0-4]\d|25[0-5])\.){3}(1?\d\d?|2[0-4]\d|25[0-5])')
+  'ipv4': re.compile(r'((1?\d\d?|2[0-4]\d|25[0-5])\.){3}(1?\d\d?|2[0-4]\d|25[0-5])'),
+  'custom': ''
 }
 
 # Default header params
@@ -20,11 +21,11 @@ def_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) 
 
 # Obtain info from soup object
 def getData(target, data):
-  for a_match in target.find_all(string=regex.get(data)):
-    if a_match in agg_data:
+  for match in target.find_all(string=regex.get(data)):
+    if match in agg_data:
       pass
     else:
-      agg_data.append(re.search(regex.get(data), a_match).group())
+      agg_data.append(re.search(regex.get(data), match).group())
 
 # Format phone numbers to be homogenous
 def formatPhone(phone_number):
@@ -50,19 +51,18 @@ def formatData(collected_data, spec_data):
     print('Preferred data to scrape is invalid or otherwise unavailable.')
     return None
 
-# Nothing is being returned because each of these are class methods
-# I know this is a poor way of accomplishing this, but it is how I will do it
 def exportData(collected_data, exp, spec_data):
   exp = exp.lower()
+  exp_object = Export(collected_data, spec_data)
   match exp:
     case 'txt':
-      Export(collected_data, spec_data).toTXT()
+      exp_object.toTXT()
     case 'xml':
-      Export(collected_data, spec_data).toXML()
+      exp_object.toXML()
     case 'csv':
-      Export(collected_data, spec_data).toCSV()
+      exp_object.toCSV()
     case 'json':
-      Export(collected_data, spec_data).toJSON()
+      exp_object.toJSON()
 
 # Main block
 if __name__ == '__main__':
@@ -77,7 +77,8 @@ if __name__ == '__main__':
      \__|   \__|  |__/ \_______)    (_______|___/    \___)_______|__|  \__)    |__|  \___|___/    \___)__|     
     
     -u, --url\t\t Provide the URL of the web page you would like to scrape from
-    -d, --data\t\t Specify the type of data you'd like to collect (email [for email addresses], phone [for phone numbers])
+    -d, --data\t\t Specify the type of data you'd like to collect (email [for email addresses], phone [for phone numbers], ip [for IPv4 addresses], custom)
+    -r, --regex\t\t Provide your own regex
     -x, --export\t File format to export your data to (`txt`, `xml`, `csv`, `json`)
     ''')
 
@@ -85,23 +86,36 @@ if __name__ == '__main__':
 
   # Input params
   parser.add_argument('-u', '--url', type=str, required=True, help='URL of the page to scrape from.')
-  parser.add_argument('-d', '--data', type=str, nargs='?',  required=True, help='Data you would like to scrape (email, phone, media).')
+  parser.add_argument('-d', '--data', type=str, nargs='?',  required=True, help='Data you would like to scrape (email, phone, ip, custom).')
+  parser.add_argument('-r', '--regex', type=str, required=False, help='Specify regular expression of your own.')
   parser.add_argument('-x', '--export', required=False, default='.txt', help='File extension type to export the data to (XML, JSON, CSV, .txt, SQLite DB).')
 
   args = parser.parse_args()
   url = args.url
-  pref_data = args.data
-  export_option = args.export
+  pref_data = args.data.lower()
+  usr_regex = args.regex
+  export_option = args.export.lower()
+
+  # Add user regular expression to regex dict if one was provided
+  if usr_regex:
+    regex['custom'] = re.compile(fr'{usr_regex}')
+  else:
+    pass
 
   # Sends an HTTP GET request, stores the HTTP response and "soupifies" the content of the response
   res = requests.get(url, headers=def_headers, verify=True, stream=True)
   soup = BeautifulSoup(res.content, 'html.parser')
   
-  ''' Finds every instance of the desired data on the page. '''
-  ''' This is the sequence that gets the data, formats it, and exports it. '''
   getData(soup, pref_data)
-  for item in agg_data:
-    print(item)
+  if pref_data == 'phone':
+    for item in agg_data:
+      print(formatPhone(item))
+  else:
+    for item in agg_data:
+      print(item)
 
+if export_option: 
   exportData(formatData(agg_data, pref_data), export_option, pref_data)
+else:
+  pass
   

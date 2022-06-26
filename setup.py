@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import subprocess, sys
 
-def install(lib) -> True:
+def install(lib) -> bool:
     try:
         subprocess.check_call(f'{sys.executable} -m pip install {lib}')
         return True

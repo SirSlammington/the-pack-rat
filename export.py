@@ -1,4 +1,5 @@
 from datetime import datetime
+from unittest import result
 import xml.etree.ElementTree as ElemTree
 import csv, json
 
@@ -21,8 +22,10 @@ class Export:
             element.set('type', 'entry')
             element.text = f'{item}'
         xml_bytes_data = ElemTree.tostring(parent_element)
+        xml_header = b'<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>'
 
         with open(f'packrat_{datetime.now().strftime("%H-%M-%S")}_{self.data_spec}_datalist.xml', 'wb') as result_file:
+            result_file.write(xml_header)
             result_file.write(xml_bytes_data)
         result_file.close()
 
@@ -40,6 +43,9 @@ class Export:
         with open(f'packrat_{datetime.now().strftime("%H-%M-%S")}_{self.data_spec}_datalist.json', 'w', encoding='UTF8') as result_file:
             result_file.write(serialized_json_data)
         result_file.close()
+
+    def toSQLite(self):
+        return None
 
     '''
     At some point, there will be SQLite3 compatibility, but that will be reserved until I begin work on another project
