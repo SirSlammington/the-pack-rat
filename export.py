@@ -1,5 +1,4 @@
 from datetime import datetime
-from unittest import result
 import xml.etree.ElementTree as ElemTree
 import csv, json
 
@@ -21,8 +20,9 @@ class Export:
             element = ElemTree.SubElement(parent_element, f'{self.data_spec}')
             element.set('type', 'entry')
             element.text = f'{item}'
+        ElemTree.indent(parent_element)
         xml_bytes_data = ElemTree.tostring(parent_element)
-        xml_header = b'<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>'
+        xml_header = b'<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>\n'
 
         with open(f'packrat_{datetime.now().strftime("%H-%M-%S")}_{self.data_spec}_datalist.xml', 'wb') as result_file:
             result_file.write(xml_header)
