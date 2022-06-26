@@ -112,8 +112,8 @@ if __name__ == '__main__':
     for item in agg_data:
       print(item)
 
-if export_option: 
-  exportData(formatData(agg_data, pref_data), export_option, pref_data)
-else:
-  pass
+  if export_option: 
+    exportData(formatData(agg_data, pref_data), export_option, pref_data)
+  else:
+    pass
   
