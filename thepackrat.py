@@ -21,7 +21,7 @@ def_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) 
 def getData(target, data):
   for match in target.find_all(string=regex.get(data)):
     if match in agg_data:
-      pass
+      continue
     else:
       agg_data.append(re.search(regex.get(data), match).group())
 
@@ -29,7 +29,7 @@ def getData(target, data):
 def formatPhone(phone_number):
   numeric_filter = filter(str.isdigit, phone_number)
   numeric_phone_number = ''.join(numeric_filter)
-  return f'({numeric_phone_number[:3]}) {numeric_phone_number[2:5]}-{numeric_phone_number[-4:]}'
+  return f'({numeric_phone_number[:3]}) {numeric_phone_number[3:6]}-{numeric_phone_number[-4:]}'
 
 # Format data to be exported
 def formatData(collected_data, spec_data):
@@ -87,12 +87,14 @@ if __name__ == '__main__':
   parser.add_argument('-d', '--data', type=str, nargs='?',  required=True, help='Data you would like to scrape (email, phone, ip, custom).')
   parser.add_argument('-r', '--regex', type=str, required=False, help='Specify regular expression of your own.')
   parser.add_argument('-x', '--export', required=False, default='.txt', help='File extension type to export the data to (XML, JSON, CSV, .txt, SQLite DB).')
+  parser.add_argument('-ua', '--user_agent', type=str, required=False, default=def_headers, help='Sets the user-agent header in the GET request to something other than the default.')
 
   args = parser.parse_args()
   url = args.url
   pref_data = args.data.lower()
   usr_regex = args.regex
   export_option = args.export.lower()
+  user_agent = {'User-Agent': args.user_agent}
 
   # Add user regular expression to regex dict if one was provided
   if usr_regex:
@@ -105,6 +107,8 @@ if __name__ == '__main__':
   soup = BeautifulSoup(res.content, 'html.parser')
   
   getData(soup, pref_data)
+  
+  # Format phone number if the selected data is a phone number
   if pref_data == 'phone':
     for item in agg_data:
       print(formatPhone(item))
@@ -116,4 +120,3 @@ if __name__ == '__main__':
     exportData(formatData(agg_data, pref_data), export_option, pref_data)
   else:
     pass
-  
