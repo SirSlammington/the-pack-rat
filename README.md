@@ -7,3 +7,5 @@
 
 ## Usage
 ```python3 thepackrat.py -u https://example.com -d email -x txt```
+### Custom Regex
+```python3 thepackrat.py -u https://example.com -r regex -x txt```
