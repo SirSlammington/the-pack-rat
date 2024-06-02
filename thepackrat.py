@@ -74,10 +74,10 @@ if __name__ == '__main__':
     \:  |  (:  (  )  :|:      "|     /|__/ \ /   /  \\  (:   _) \|: | \  \     |:  __   \ /   /  \\  \:  |     
      \__|   \__|  |__/ \_______)    (_______|___/    \___)_______|__|  \__)    |__|  \___|___/    \___)__|     
     
-    -u, --url\t\t Provide the URL of the web page you would like to scrape from
-    -d, --data\t\t Specify the type of data you'd like to collect (email [for email addresses], phone [for phone numbers], ip [for IPv4 addresses], custom)
-    -r, --regex\t\t Provide your own regex
-    -x, --export\t File format to export your data to (`txt`, `xml`, `csv`, `json`)
+    -u, --url Provide the URL of the web page you would like to scrape from
+    -d, --data Specify the type of data you'd like to collect (email [for email addresses], phone [for phone numbers], ip [for IPv4 addresses], custom)
+    -r, --regex Provide your own regex
+    -x, --export File format to export your data to (`txt`, `xml`, `csv`, `json`)
     ''')
 
   parser = ArgumentParser(description='Select options.')
