@@ -15,24 +15,24 @@ regex = {
 }
 
 # Default header params
-def_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
+def_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0'}
 
-# Obtain info from soup object
 def getData(target, data):
+  '''Obtain info from soup object'''
   for match in target.find_all(string=regex.get(data)):
     if match in agg_data:
       continue
     else:
       agg_data.append(re.search(regex.get(data), match).group())
 
-# Format phone numbers to be homogenous
-def formatPhone(phone_number):
+def formatPhone(phone_number) -> str:
+  '''Format phone numbers to be homogenous'''
   numeric_filter = filter(str.isdigit, phone_number)
   numeric_phone_number = ''.join(numeric_filter)
   return f'({numeric_phone_number[:3]}) {numeric_phone_number[3:6]}-{numeric_phone_number[-4:]}'
-
-# Format data to be exported
+ 
 def formatData(collected_data, spec_data):
+  '''Format data to be exported'''
   # Ensure that each individual item is only ever a string
   for item in collected_data:
     item = str(item)
@@ -65,7 +65,7 @@ def exportData(collected_data, exp, spec_data):
 # Main block
 if __name__ == '__main__':
   if not len(sys.argv) > 1:
-    print('''
+    print(r'''
  ___________ __    __   _______        _______    __      ______  __   ___       _______       __ ___________  
 ("     _   ")" |  | "\ /"     "|      |   __ "\  /""\    /" _  "\|/"| /  ")     /"      \     /""("     _   ") 
  )__/  \\__(:  (__)  :|: ______)      (. |__) :)/    \  (: ( \___|: |/   /     |:  { }   |   /    )__/  \\__/  

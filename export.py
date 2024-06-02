@@ -43,11 +43,3 @@ class Export:
         with open(f'packrat_{datetime.now().strftime("%H-%M-%S")}_{self.data_spec}_datalist.json', 'w', encoding='UTF8') as result_file:
             result_file.write(serialized_json_data)
         result_file.close()
-
-    def toSQLite(self):
-        return None
-
-    '''
-    At some point, there will be SQLite3 compatibility, but that will be reserved until I begin work on another project
-    that will likely be called The Rat King, in which the aggregated data from any Pack Rat scan can be centralized.
-    '''
